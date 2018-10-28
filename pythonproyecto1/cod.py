@@ -194,7 +194,7 @@ class AtencionUsuario:
         while not invalido:
             if tamano != "g" and tamano != "m" and tamano != "p":
                 print("Tamano incorrecto, vuelva a seleccionar ")
-                tamano = input()
+                tamano = raw_input()
             else:
                 invalido = True
         if tamano =="g":
