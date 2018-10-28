@@ -3,10 +3,7 @@ class Server
   def initialize( port, ip )
     @server = TCPServer.open( ip, port )
     @connections = Hash.new
-    @rooms = Hash.new
     @clients = Hash.new
-    @connections[:server] = @server
-    @connections[:rooms] = @rooms
     @connections[:clients] = @clients
     puts "Servidor Inicializado"
     run
@@ -17,6 +14,7 @@ class Server
       Thread.start(@server.accept) do | client |
         nick_name = client.gets.chomp.to_sym
         @connections[:clients].each do |other_name, other_client|
+          puts "other name : #{other_name} y other_client : #{other_client}"
           if nick_name == other_name || client == other_client
             client.puts "Nombre de usuario ya existe"
             Thread.kill self
