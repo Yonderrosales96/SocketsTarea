@@ -128,8 +128,6 @@ class Pedido:
         for pedido in self.pedidos:
             print( pedido.getDescripcion())
 
-pedidos = Pedido(Pequena(Salchichon(Jamon(PizzaMargarita()))))
-
 
 class AtencionUsuario:
     def __init__(self):
