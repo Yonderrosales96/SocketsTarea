@@ -1,3 +1,5 @@
+from reportlab.pdfgen import canvas
+import time
 class Vendible:
     def getDescripcion(self):
         return none
@@ -111,9 +113,9 @@ class Grande(DecoradorTamano):
 
 
 class Pedido:
-    def __init__(self,vendible):
+    def __init__(self):
         self.pedidos=[]
-        self.pedidos.append(vendible)
+        
 
     def total (self):
         total=0
@@ -126,20 +128,88 @@ class Pedido:
 
     def getDescripcionPedidos(self):
         for pedido in self.pedidos:
-            print( pedido.getDescripcion())
+            print(pedido.getDescripcion())
 
+    def getPizza(self,indice):
+        pedidos.get(indice)
+
+
+class Cliente:
+    def __init__(self):
+        self.cedula =""
+        self.nombre = ""
+        self.direccion = ""
+
+    def solicitarNombre(self):
+        print("Por favor introduzca su nombre")
+        self.nombre =input()
+
+    def solicitarCedula(self):
+        print("Por favor introduzca su cedula")
+        self.cedula = input()
+
+    def solicitarDireccion(self):
+        print("Por favor introduzca su direccion")
+        self.direccion = ""
+
+    def imprimirFactura(self,pedido):
+       
+        c = canvas.Canvas("factura.pdf")
+        c.setLineWidth(.3)
+        c.setFont('Helvetica', 12)
+ 
+        c.drawString(30,750,'FACTURA')
+        c.drawString(30,735,'Tu Pizzeria Guatirence')
+        c.drawString(485,750,time.strftime("%d:%m:%y -%I:%M:%S"))
+        c.line(470,747,600,747)
+ 
+        c.drawString(275,725,'ESTIMADO:')
+        c.drawString(500,725,self.nombre)
+        c.drawString(275,700,'CEDULA:')
+        c.drawString(500,700,self.cedula)
+        c.line(378,723,580,723)
+        c.line(378,697,580,697)
+ 
+        x = 30
+        y = 653
+        for pizza in pedido.pedidos:
+            c.drawString(x,y,'Pizza:')
+            c.line(x+90,y-3,x+550,y-3)
+            c.drawString(x+90,y,pizza.getDescripcion())
+            y = y - 20 
+ 
+        c.save()
 
 class AtencionUsuario:
     def __init__(self):
-        self.pedidos = []
+       
         self.pizza = PizzaMargarita()
-        print("Bienvenido a la pizzeria")
-        print("Por favor seleccione un tamano para su pizza")
-        print("Opciones:")
-        print("Tamanos: Grande (g) Mediana (m) Personal (p)")
-        self.SeleccionarTamano()
-        print("Es momento de seleccionar los toppings")
-        self.SeleccionarToppings()
+        self.pedidos = Pedido()
+        exit = False
+
+
+       
+        while not exit:
+            print("Bienvenido a la pizzeria")
+            print("Por favor seleccione un tamano para su pizza")
+            print("Opciones:")
+            print("Tamanos: Grande (g) Mediana (m) Personal (p)")
+            self.SeleccionarTamano()
+            print("Es momento de seleccionar los toppings")
+            self.SeleccionarToppings()
+            str = input("Desea Continuar [S/n]")
+            if str == "s" or str == "S":
+                self.pedidos.add(self.pizza)
+            else:
+                exit = True
+                self.pedidos.add(self.pizza)
+                self.pedidos.getDescripcionPedidos()
+                print("PRECIO TOTAL : ",self.pedidos.total())
+                cliente =Cliente()
+                cliente.solicitarNombre()
+                cliente.solicitarCedula()
+                cliente.solicitarDireccion()
+                cliente.imprimirFactura(self.pedidos)
 
 
     def SeleccionarToppings(self):
@@ -154,7 +224,7 @@ class AtencionUsuario:
         salir = False
         while not salir:
             print("Indique el ingrediente que desea (enter para terminar)")
-            ingrediente = raw_input()
+            ingrediente = input()
             if ingrediente == "ja":
                 print("Ha seleccionado jamon")
                 self.pizza = Jamon(self.pizza)
@@ -188,11 +258,11 @@ class AtencionUsuario:
 
     def SeleccionarTamano(self):
         invalido = False
-        tamano = raw_input()
+        tamano = input()
         while not invalido:
             if tamano != "g" and tamano != "m" and tamano != "p":
                 print("Tamano incorrecto, vuelva a seleccionar ")
-                tamano = raw_input()
+                tamano = input()
             else:
                 invalido = True
         if tamano =="g":
