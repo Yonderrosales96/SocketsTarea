@@ -115,7 +115,7 @@ class Grande(DecoradorTamano):
 class Pedido:
     def __init__(self):
         self.pedidos=[]
-        
+
 
     def total (self):
         total=0
@@ -150,45 +150,62 @@ class Cliente:
 
     def solicitarDireccion(self):
         print("Por favor introduzca su direccion")
-        self.direccion = ""
+        self.direccion = input()
 
     def imprimirFactura(self,pedido):
-       
+
         c = canvas.Canvas("factura.pdf")
         c.setLineWidth(.3)
         c.setFont('Helvetica', 12)
- 
+
         c.drawString(30,750,'FACTURA')
         c.drawString(30,735,'Tu Pizzeria Guatirence')
         c.drawString(485,750,time.strftime("%d:%m:%y -%I:%M:%S"))
         c.line(470,747,600,747)
- 
-        c.drawString(275,725,'ESTIMADO:')
-        c.drawString(500,725,self.nombre)
+
+        c.drawString(275,725,'NOMBRE:')
+        c.drawString(400,725,self.nombre)
         c.drawString(275,700,'CEDULA:')
-        c.drawString(500,700,self.cedula)
+        c.drawString(400,700,self.cedula)
+        c.drawString(275,675,'DIRECCION')
+        c.drawString(400,675,self.direccion)
+        c.line(378,672,580,672)
         c.line(378,723,580,723)
         c.line(378,697,580,697)
- 
+
         x = 30
-        y = 653
+        y = 603
+        c.drawString(500,630,"Monto")
         for pizza in pedido.pedidos:
+            c.setFont('Helvetica', 12)
             c.drawString(x,y,'Pizza:')
-            c.line(x+90,y-3,x+550,y-3)
-            c.drawString(x+90,y,pizza.getDescripcion())
-            y = y - 20 
- 
+            c.drawString(x+470,y,str(pizza.getPrecio()))
+            c.line(x+30,y-3,x+500,y-3)
+            c.setFont('Helvetica',8)
+            c.drawString(x+35,y,pizza.getDescripcion())
+            y = y - 20
+        c.setFont('Helvetica',12)
+        c.drawString(x+400,y,'Subtotal:')
+        c.drawString(x+470,y,str(pedido.total()))
+        y=y-20
+        iva = 12*pedido.total()/100
+        total = pedido.total()+iva
+        c.drawString(x+400,y,'IVA 12%:')
+        c.drawString(x+470,y,str(iva))
+        y=y-20
+        c.drawString(x+400,y,'Total:')
+        c.drawString(x+470,y,str(total))
         c.save()
 
 class AtencionUsuario:
     def __init__(self):
-       
+
         self.pizza = PizzaMargarita()
         self.pedidos = Pedido()
         exit = False
 
 
-       
+
         while not exit:
             print("Bienvenido a la pizzeria")
             print("Por favor seleccione un tamano para su pizza")
